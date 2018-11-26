@@ -7,7 +7,7 @@ import ChatArea from './components/chatArea'
 
 const P2P = require('socket.io-p2p')
 const io = require('socket.io-client')
-const socket = io(':8080/')
+const socket = io(':8080')
 const opts = {autoUpgrade: false, numClients: 10}
 const p2p = new P2P(socket, opts)
 
