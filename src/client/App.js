@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import './app.css'
+import './css/bootstrap4-growth.min.css'
 import ReactImage from './react.png'
 import { setInterval } from 'timers';
+import P2pStatus from './components/p2pStatus'
 
 const P2P = require('socket.io-p2p')
 const io = require('socket.io-client')
@@ -13,39 +14,37 @@ const p2p = new P2P(socket, opts)
 //   p2p.emit('healthCheck', '')
 // }, 5000);
 
-setTimeout(() => {
-  p2p.upgrade()
-  console.log("Let's get private!")
-}, 5000);
-
 setInterval(() => {
-  console.log(`I am ${socket.id}`)
-  p2p.emit('sendMessage', `I am ${socket.id}`)
+    console.log(`I am ${socket.id}`)
+    p2p.emit('sendMessage', `I am ${socket.id}`)
 }, 2000);
 
 p2p.on('sendMessage', (payload) => {
-  console.log(`Got message: ${payload} from peer`)
+    console.log(`Got message: ${payload} from peer`)
 })
 
 export default class App extends Component {
-  state = {
-    username: null,
-    p2pStatus: false
-  }
+    state = {
+        username: null,
+        p2pStatus: false
+    }
 
-  componentDidMount() {
-    fetch('/api/getUsername')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
-  }
+    componentDidMount() {
+        setTimeout(() => {
+        p2p.upgrade()
+        console.log("Let's get private!")
+        this.setState({p2pStatus: true})
+        }, 5000);
+    }
 
-  render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        <img src={ReactImage} alt="react" />
-      </div>
-    );
-  }
+    render() {
+        const { username } = this.state;
+        return (
+        <div className="container">
+            <div>
+            <P2pStatus status={this.state.p2pStatus} />
+            </div>
+        </div>
+        );
+    }
 }
