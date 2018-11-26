@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './css/bootstrap4-growth.min.css'
 import ReactImage from './react.png'
 import { setInterval } from 'timers';
-import P2pStatus from './components/p2pStatus'
+import P2pContainer from './components/p2pContainer'
 
 const P2P = require('socket.io-p2p')
 const io = require('socket.io-client')
@@ -41,8 +41,11 @@ export default class App extends Component {
         const { username } = this.state;
         return (
         <div className="container">
-            <div>
-            <P2pStatus status={this.state.p2pStatus} />
+            <div className="row justify-content-center">
+                <div className="col-md-2">
+                    <p>Here</p>
+                    <P2pContainer status={this.state.p2pStatus} />
+                </div>
             </div>
         </div>
         );
